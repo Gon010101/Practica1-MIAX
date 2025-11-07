@@ -1,303 +1,397 @@
-# 📊 Financial Extractor Project
+# 📊 Financial Extractor - Sistema de Análisis Financiero
 
-Sistema modular de análisis financiero que extrae datos históricos de múltiples fuentes, calcula métricas estadísticas avanzadas, simula escenarios mediante Monte Carlo y genera reportes automatizados.
+Sistema interactivo de análisis financiero que extrae datos históricos de múltiples fuentes, calcula métricas estadísticas avanzadas y realiza simulaciones Monte Carlo para análisis de riesgo.
 
-## 🎯 Características Principales
+## 🚀 Inicio Rápido
 
-- *Extracción Multi-Fuente*: Adaptadores para Yahoo Finance y otras APIs (patrón Adapter)
-- *Análisis Estadístico*: Cálculo automático de métricas (Sharpe Ratio, CAGR, volatilidad)
-- *Simulación Monte Carlo*: Proyecciones usando Movimiento Browniano Geométrico (GBM)
-- *Gestión de Portfolios*: Análisis de carteras diversificadas con matriz de covarianza
-- *Reportes Automatizados*: Generación de documentos Markdown y visualizaciones
-- *Preprocesamiento Robusto*: Limpieza de datos, detección de inconsistencias
+### 1. Instalación
+
+```bash
+# Clonar o descargar el proyecto
+cd PRACTICA1
+
+# Crear entorno virtual (recomendado)
+python -m venv env
+
+# Activar entorno virtual
+# Windows:
+env\Scripts\activate
+# Linux/Mac:
+source env/bin/activate
+
+# Instalar dependencias
+pip install -r requirements.txt
+```
+
+### 2. Ejecutar
+
+```bash
+python -m src.main
+```
+
+¡Eso es todo! El programa te guiará con menús interactivos.
+
+---
 
 ## 📁 Estructura del Proyecto
 
-
-Financial_Extractor_Project/
+```
+PRACTICA1/
 ├── src/
-│   ├── adapters/              # Módulo 1: Adaptadores de APIs
-│   │   ├── __init__.py        # Clase base abstracta APISourceBase
-│   │   ├── yahoo_adapter.py   # Adaptador para yfinance
-│   │   └── investing_adapter.py # Adaptador simulado para Investing.com
-│   ├── models/                # Módulo 2: Estructuras de datos
-│   │   ├── __init__.py
-│   │   ├── timeseries.py      # DataClass para series de precios
-│   │   └── portfolio.py       # DataClass para carteras
-│   ├── extractor.py           # Módulo 3: Clase principal Extractor
-│   └── processing.py          # Módulo 4: Funciones de preprocesado
-├── main.py                    # Punto de entrada con demos
-├── requirements.txt           # Dependencias
+│   ├── adapters/           # Extracción de datos de diferentes fuentes
+│   │   ├── api_source_base.py
+│   │   ├── yahoo_adapter.py
+│   │   └── investing_adapter.py
+│   ├── models/            # Modelos de datos
+│   │   ├── timeseries.py  # Métricas de activos individuales
+│   │   └── portfolio.py   # Análisis de carteras
+│   ├── extractor.py       # Coordinador principal
+│   ├── processing.py      # Limpieza y preprocesado
+│   └── main.py           # Interfaz interactiva
+├── requirements.txt
 ├── .gitignore
 └── README.md
+```
 
+---
 
-## 🚀 Instalación
+## 🎯 ¿Qué Puedes Hacer?
 
-### 1. Clonar el repositorio
+### 1️⃣ Analizar Activos Individuales
 
-bash
-git clone <repository-url>
-cd Financial_Extractor_Project
+Extrae y analiza datos históricos de acciones:
 
+```
+📊 FINANCIAL EXTRACTOR
+  1. Información de activos        ← Elige esto
+  2. Análisis de cartera
+  0. Salir
+```
 
-### 2. Crear entorno virtual (recomendado)
+**El sistema te preguntará:**
+- ¿Qué activos? (Ej: `AAPL, MSFT, GOOGL`)
+- ¿Qué periodo? (Ej: `2022-01-01` a `2024-01-01`)
+- ¿Qué datos? (Precio, volumen, etc.)
+- ¿Qué fuente? (Yahoo Finance o simulado)
 
-bash
-python -m venv venv
-source venv/bin/activate  # En Windows: venv\Scripts\activate
+**Obtendrás:**
+- Datos históricos en tabla
+- Estadísticas completas (Sharpe Ratio, VaR, CAGR, etc.)
+- Opción de guardar en CSV
 
+### 2️⃣ Crear y Analizar Carteras
 
-### 3. Instalar dependencias
+Analiza portfolios con múltiples activos:
 
-bash
-pip install -r requirements.txt
+```
+📊 FINANCIAL EXTRACTOR
+  1. Información de activos
+  2. Análisis de cartera           ← Elige esto
+  0. Salir
+```
 
+**Configurarás:**
+- Activos de tu cartera (Ej: `AAPL, MSFT`)
+- Pesos de cada activo (Ej: `60%, 40%`)
+- Periodo de análisis
 
-## 📖 Uso Rápido
+**Podrás:**
+1. Ver métricas de la cartera (rendimiento, volatilidad, Sharpe)
+2. **Simulación Monte Carlo** (predicción probabilística)
+3. Generar reporte completo en Markdown
+4. Crear visualizaciones (gráficos de riesgo, distribuciones)
 
-### Ejecutar demos interactivas
+---
 
-bash
-python main.py
+## 🎲 Simulación Monte Carlo
 
+La funcionalidad estrella del sistema. Proyecta miles de escenarios futuros:
 
-Esto mostrará un menú con 4 demos predefinidas:
+```
+🎲 SIMULACIÓN MONTE CARLO
+🔢 Número de simulaciones: 5000
+📅 Horizonte temporal: 252  (días = 1 año)
 
-1. *Análisis Rápido*: Análisis estadístico de un solo activo
-2. *Portfolio Diversificado*: Creación y análisis completo de cartera
-3. *Monte Carlo Avanzado*: Simulaciones con diferentes horizontes temporales
-4. *Comparación de Fuentes*: Validación de datos entre fuentes
+✅ Simulación completada
 
-### Ejemplo de código básico
+  Valor inicial:              $    10000.00
+  Valor esperado (media):     $    10850.23
+  Percentil 5% (pesimista):   $     8234.56
+  Percentil 95% (optimista):  $    13892.11
+  VaR (95%):                  $     8500.00
+  Pérdida potencial:          $     1500.00
+```
 
-python
-from src.extractor import Extractor
+**Genera un gráfico mostrando:**
+- Todas las trayectorias simuladas
+- Escenario pesimista (línea roja)
+- Escenario esperado (línea azul)
+- Escenario optimista (línea verde)
 
-# Inicializar extractor
-extractor = Extractor(default_source='yahoo')
+---
 
-# Análisis rápido de un activo
-extractor.quick_analysis('AAPL', '2022-01-01', '2024-01-01')
+## 📈 Métricas Calculadas
 
-# Crear portfolio
-tickers = ['AAPL', 'MSFT', 'GOOGL']
-weights = {'AAPL': 0.4, 'MSFT': 0.3, 'GOOGL': 0.3}
+### Para Activos Individuales (TimeSeries)
 
-portfolio = extractor.create_portfolio(
-    tickers, weights,
-    start_date='2022-01-01',
-    end_date='2024-01-01'
-)
-
-# Generar reporte
-portfolio.report(filename='mi_portfolio.md')
-
-# Simulación Monte Carlo
-results = portfolio.montecarlo_simulation(
-    num_simulations=1000,
-    time_horizon=252
-)
-
-# Visualizar
-portfolio.plot_montecarlo(results, filename='simulacion.png')
-
-
-## 🏗 Arquitectura del Sistema
-
-### 1. Patrón Adaptador (Módulo adapters/)
-
-Estandariza datos de diferentes APIs al formato común:
-
-| Columna | Descripción |
+| Métrica | Descripción |
 |---------|-------------|
-| Date | Fecha del registro |
-| Open | Precio de apertura |
-| High | Precio máximo |
-| Low | Precio mínimo |
-| Close | Precio de cierre |
-| Volume | Volumen negociado |
+| **Sharpe Ratio** | Rendimiento ajustado por riesgo (>1 bueno, >2 excelente) |
+| **Sortino Ratio** | Como Sharpe pero solo penaliza volatilidad negativa |
+| **CAGR** | Tasa de crecimiento anual compuesta |
+| **Max Drawdown** | Mayor pérdida desde un pico histórico |
+| **VaR (95%)** | Pérdida máxima esperada con 95% confianza |
+| **CVaR** | Pérdida esperada en el peor 5% de casos |
+| **Skewness** | Asimetría de la distribución de retornos |
+| **Kurtosis** | "Colas pesadas" (probabilidad de eventos extremos) |
 
-*Clase Base*: APISourceBase  
-*Implementaciones*: YahooAdapter, InvestingAdapter
+### Para Carteras (Portfolio)
 
-### 2. DataClasses (Módulo models/)
+- **Rendimiento de la cartera** (ponderado por pesos)
+- **Volatilidad de la cartera** (considera correlaciones)
+- **Matriz de covarianza** (correlaciones entre activos)
+- **Simulación Monte Carlo** con VaR del portfolio
 
-#### TimeSeries
+---
 
-Encapsula una serie temporal de precios con cálculo automático de:
+## 💡 Casos de Uso
 
-- *Media de rendimientos* (mean_return)
-- *Volatilidad* (stdev_return)
-- *Sharpe Ratio*: (Rendimiento - Tasa Libre Riesgo) / Volatilidad
-- *CAGR*: Tasa de crecimiento anual compuesta
+### Ejemplo 1: Comparar Dos Acciones
 
-#### Portfolio
+```bash
+python -m src.main
+# 1. Información de activos
+# Tickers: AAPL, TSLA
+# Periodo: 2023-01-01 a 2024-01-01
+# Ver resumen estadístico
+```
 
-Gestiona carteras de inversión:
+Compara Sharpe Ratios, volatilidades y CAGR para decidir cuál es mejor inversión.
 
-- *Pesos normalizados*: Suma = 1
-- *Matriz de covarianza*: Correlación entre activos
-- *Métricas agregadas*: Rendimiento y volatilidad de la cartera
-- *Simulación Monte Carlo*: Proyecciones probabilísticas
+### Ejemplo 2: Evaluar Riesgo de tu Portfolio
 
-### 3. Simulación Monte Carlo
+```bash
+python -m src.main
+# 2. Análisis de cartera
+# Tickers: AAPL, MSFT, GOOGL
+# Pesos: 50%, 30%, 20%
+# Opción 2: Simulación Monte Carlo
+```
 
-Implementa *Movimiento Browniano Geométrico (GBM)*:
+Descubre cuál es tu pérdida máxima probable (VaR) y los escenarios optimista/pesimista.
 
-$$S_t = S_{t-1} \cdot e^{(\mu - \frac{1}{2}\sigma^2)\Delta t + \sigma \sqrt{\Delta t} Z}$$
+### Ejemplo 3: Generar Reporte para Cliente
+
+```bash
+python -m src.main
+# 2. Análisis de cartera
+# [Configura tu cartera]
+# Opción 3: Generar reporte completo
+# Archivo: informe_cliente.md
+```
+
+Crea un documento profesional con todas las métricas y recomendaciones.
+
+---
+
+## 🔧 Arquitectura Técnica
+
+### 1. Patrón Adaptador
+
+Estandariza datos de diferentes fuentes:
+
+```python
+APISourceBase (abstracta)
+    ├── YahooAdapter      # Yahoo Finance (real)
+    └── InvestingAdapter  # Simulado (demo)
+```
+
+**Todas las fuentes devuelven:**
+```
+Date | Open | High | Low | Close | Volume
+```
+
+### 2. DataClasses con Cálculo Automático
+
+```python
+@dataclass
+class TimeSeries:
+    ticker: str
+    data: pd.DataFrame
+    
+    # Se calculan automáticamente al crear el objeto:
+    mean_return: float      # ✅ Auto
+    stdev_return: float     # ✅ Auto
+    sharpe_ratio()          # Método
+    
+@dataclass  
+class Portfolio:
+    components: List[TimeSeries]
+    weights: Dict[str, float]
+    
+    # Se calculan automáticamente:
+    portfolio_return: float     # ✅ Auto
+    portfolio_volatility: float # ✅ Auto
+    montecarlo_simulation()     # Método
+```
+
+### 3. Simulación Monte Carlo (GBM)
+
+Implementa **Movimiento Browniano Geométrico**:
+
+$$S_t = S_{t-1} \cdot \exp\left[(\mu - \frac{\sigma^2}{2})\Delta t + \sigma\sqrt{\Delta t} \cdot Z\right]$$
 
 Donde:
-- $S_t$: Precio futuro
-- $\mu$: Media de rendimientos (drift)
+- $S_t$: Precio en tiempo t
+- $\mu$: Rendimiento medio (drift)
 - $\sigma$: Volatilidad
-- $Z$: Variable aleatoria normal estándar
+- $Z \sim N(0,1)$: Variable aleatoria normal
 
-*Parámetros configurables*:
-- num_simulations: Número de trayectorias (default: 1000)
-- time_horizon: Períodos a simular (default: 252 días)
-- confidence_level: Nivel de confianza para VaR (default: 0.95)
+---
 
-### 4. Preprocesamiento (Módulo processing.py)
+## 📊 Salidas del Sistema
 
-Pipeline automático:
+### 1. Datos Tabulares (CSV)
 
-1. *clean_nans()*: Relleno/eliminación de valores faltantes
-2. *check_consistency()*: Validación de fechas (duplicados, orden)
-3. *calculate_log_returns()*: Cálculo de rendimientos logarítmicos
-4. *validate_dataframe()*: Verificación de requisitos mínimos
+```
+Date,Open,High,Low,Close,Volume
+2023-01-03,125.07,125.42,124.17,125.07,112117500
+2023-01-04,126.89,128.66,125.08,126.36,89113600
+...
+```
 
-## 📊 Reportes y Visualizaciones
+### 2. Reportes Markdown
 
-### Reporte Markdown
+```markdown
+# 📊 Reporte de Análisis de Cartera
 
-El método Portfolio.report() genera un documento con:
+## 📈 Resumen Ejecutivo
+- Rendimiento Anualizado: 15.24%
+- Volatilidad Anualizada: 22.31%
+- Ratio de Sharpe: 0.6832
 
-- *Resumen Ejecutivo*: Métricas clave de la cartera
-- *Análisis por Activo*: Tabla comparativa de componentes
-- *Resultados Monte Carlo*: Escenarios optimista/esperado/pesimista
-- *Advertencias*: Detección automática de riesgos
+## 🎯 Métricas Clave
+- Value at Risk (VaR 95%): $8,234.56
+...
+```
 
-### Visualizaciones
+### 3. Visualizaciones PNG
 
-El método Portfolio.plots_report() genera:
+- `montecarlo_simulation.png`: Gráfico de trayectorias
+- `returns_distribution.png`: Histograma de retornos
+- `portfolio_weights.png`: Distribución de pesos
 
-1. *Simulación Monte Carlo*: 
-   - Todas las trayectorias
-   - Percentiles 5% y 95%
-   - Trayectoria media
+---
 
-2. *Distribución de Rendimientos*:
-   - Histograma de frecuencias
-   - Curva normal teórica
+## 🛠️ Personalización
 
-3. *Composición del Portfolio*:
-   - Gráfico de pastel (pie chart)
-   - Gráfico de barras
+### Añadir Nueva Fuente de Datos
 
-## 🧪 Casos de Uso
+1. Crea `src/adapters/tu_adapter.py`:
 
-### 1. Comparar estrategias de inversión
+```python
+from .api_source_base import APISourceBase
 
-python
-# Estrategia conservadora
-portfolio_conservador = extractor.create_portfolio(
-    ['SPY', 'BND', 'GLD'],  # Acciones, Bonos, Oro
-    {'SPY': 0.5, 'BND': 0.3, 'GLD': 0.2},
-    start_date, end_date
-)
-
-# Estrategia agresiva
-portfolio_agresivo = extractor.create_portfolio(
-    ['TSLA', 'NVDA', 'ARKK'],  # Tech de alto crecimiento
-    {'TSLA': 0.4, 'NVDA': 0.4, 'ARKK': 0.2},
-    start_date, end_date
-)
-
-# Comparar Sharpe Ratios
-print(f"Conservador: {portfolio_conservador.calculate_sharpe_ratio():.4f}")
-print(f"Agresivo: {portfolio_agresivo.calculate_sharpe_ratio():.4f}")
-
-
-### 2. Análisis de riesgo (VaR)
-
-python
-results = portfolio.montecarlo_simulation(
-    num_simulations=10000,
-    time_horizon=252,
-    confidence_level=0.99  # VaR 99%
-)
-
-print(f"Con 99% confianza, pérdida máxima: ${results['var_loss']:.2f}")
-
-
-### 3. Backtesting de pesos
-
-python
-# Probar diferentes asignaciones
-weights_scenarios = [
-    {'AAPL': 0.5, 'MSFT': 0.5},
-    {'AAPL': 0.7, 'MSFT': 0.3},
-    {'AAPL': 0.3, 'MSFT': 0.7}
-]
-
-for weights in weights_scenarios:
-    pf = Portfolio(components, weights)
-    print(f"{weights} -> Sharpe: {pf.calculate_sharpe_ratio():.4f}")
-
-
-## ⚙ Configuración Avanzada
-
-### Cambiar fuente de datos
-
-python
-extractor = Extractor(default_source='yahoo')
-extractor.set_source('investing')  # Cambiar a Investing.com
-
-
-### Tasa libre de riesgo personalizada
-
-python
-sharpe = portfolio.calculate_sharpe_ratio(risk_free_rate=0.04)  # 4%
-
-
-### Períodos de trading personalizados
-
-python
-# Para datos semanales (52 semanas/año)
-sharpe = timeseries.calculate_sharpe_ratio(periods_per_year=52)
-
-
-## 🔧 Extensibilidad
-
-### Añadir un nuevo adaptador
-
-1. Crear clase en src/adapters/:
-
-python
-from src.adapters import APISourceBase
-
-class NuevoAdapter(APISourceBase):
+class TuAdapter(APISourceBase):
     def fetch_data(self, ticker, start_date, end_date):
-        # Implementar extracción
-        raw_data = tu_api.obtener_datos(ticker)
-        
-        # Mapear a formato estándar
+        # Tu lógica de extracción
         return pd.DataFrame({
-            'Date': raw_data['fecha'],
-            'Open': raw_data['apertura'],
-            # ... resto de columnas
+            'Date': ...,
+            'Open': ...,
+            'High': ...,
+            'Low': ...,
+            'Close': ...,
+            'Volume': ...
         })
     
     def get_source_name(self):
-        return "Mi Nueva Fuente"
+        return "Tu Fuente"
+```
 
+2. Registra en `src/extractor.py`:
 
-2. Registrar en Extractor:
+```python
+self.adapters = {
+    'yahoo': YahooAdapter(),
+    'investing': InvestingAdapter(),
+    'tu_fuente': TuAdapter()  # ← Añade aquí
+}
+```
 
-python
-self.adapters['mi_fuente'] = NuevoAdapter()
+### Cambiar Parámetros de Monte Carlo
 
+En `portfolio.py`, método `montecarlo_simulation()`:
+
+```python
+# Cambiar defaults:
+def montecarlo_simulation(
+    self,
+    num_simulations: int = 5000,    # Antes: 1000
+    time_horizon: int = 504,        # Antes: 252 (2 años en vez de 1)
+    confidence_level: float = 0.99  # Antes: 0.95
+):
+```
+
+---
+
+## ❓ Preguntas Frecuentes
+
+### ¿Qué fuentes de datos usa?
+
+- **Yahoo Finance** (real): Datos reales de mercado vía `yfinance`
+- **Investing (simulado)**: Generador sintético para demos
+
+### ¿Puedo analizar criptomonedas?
+
+Sí, usa Yahoo Finance con símbolos como `BTC-USD`, `ETH-USD`.
+
+### ¿Cómo interpreto el Sharpe Ratio?
+
+- **< 1**: Retorno insuficiente por el riesgo asumido
+- **1-2**: Bueno
+- **2-3**: Muy bueno
+- **> 3**: Excelente
+
+### ¿Qué es el VaR?
+
+**Value at Risk**: Con 95% confianza, no perderás más de X.
+
+Ejemplo: VaR = $8,500 significa que en el 95% de los casos, tu portfolio valdrá al menos $8,500.
+
+### ¿Cuántas simulaciones Monte Carlo debo hacer?
+
+- **1,000**: Rápido, suficiente para estimaciones
+- **5,000**: Balance tiempo/precisión (recomendado)
+- **10,000+**: Máxima precisión, tarda más
+
+---
+
+## 🐛 Solución de Problemas
+
+### Error: "No se encontraron datos para XXXXX"
+
+**Causa**: Ticker inexistente o sin datos en el periodo.
+
+**Solución**: Verifica el símbolo en Yahoo Finance.
+
+### Error: "Datos insuficientes"
+
+**Causa**: Menos de 30 días de datos.
+
+**Solución**: Amplía el rango de fechas.
+
+### Caracteres raros en la salida
+
+**Causa**: Problema de encoding UTF-8.
+
+**Solución**: 
+```bash
+# Windows PowerShell:
+[Console]::OutputEncoding = [System.Text.Encoding]::UTF8
+python -m src.main
+```
+
+---
 
 ## 📚 Fundamentos Matemáticos
 
@@ -305,66 +399,79 @@ self.adapters['mi_fuente'] = NuevoAdapter()
 
 $$r_t = \ln\left(\frac{P_t}{P_{t-1}}\right)$$
 
-*Ventajas*:
-- Aditivos: $r_{total} = \sum r_i$
-- Simétricos: pérdida de 50% ≠ ganancia de 50%
-- Distribución aproximadamente normal
+**Ventajas**: Aditivos, simétricos, aproximadamente normales.
 
-### Ratio de Sharpe
+### Sharpe Ratio
 
 $$\text{Sharpe} = \frac{E[R_p] - R_f}{\sigma_p}$$
 
-*Interpretación*:
-- < 1: Rendimiento insuficiente por riesgo
-- 1-2: Bueno
-- 2-3: Muy bueno
-- \> 3: Excelente
+Mide el **exceso de retorno por unidad de riesgo**.
 
 ### Volatilidad del Portfolio
 
 $$\sigma_p = \sqrt{w^T \Sigma w}$$
 
-Donde:
-- $w$: Vector de pesos
-- $\Sigma$: Matriz de covarianza
+Considera las **correlaciones** entre activos (matriz $\Sigma$).
 
-## 🐛 Troubleshooting
+---
 
-### Error: "No data found for this date range"
-
-*Solución*: El ticker no existe o las fechas son inválidas. Verificar:
-python
-import yfinance as yf
-yf.Ticker('SIMBOLO').info  # Comprobar si existe
-
-
-### Advertencia: "Datos insuficientes (<30 días)"
-
-*Solución*: Ampliar rango de fechas o usar activos con más historia.
-
-### Error: "Los pesos no suman 1"
-
-*Solución*: El sistema normaliza automáticamente, pero verificar:
-python
-assert sum(weights.values()) > 0.99
-
-
-## 🤝 Contribuciones
-
-Este proyecto es un framework educativo. Para contribuir:
-
-1. Fork el repositorio
-2. Crear branch de feature (git checkout -b feature/nueva-funcionalidad)
-3. Commit cambios (git commit -m 'Añadir nueva funcionalidad')
-4. Push al branch (git push origin feature/nueva-funcionalidad)
-5. Abrir Pull Request
 
 ## 📄 Licencia
 
-MIT License - ver archivo LICENSE para detalles
+MIT License - Uso libre para fines educativos y comerciales.
 
-## 📧 Contacto
+---
 
-Para preguntas o sugerencias, abrir un issue en GitHub.
+## 🎓 Recursos Adicionales
+
+### Aprender Más
+
+- **Finanzas Cuantitativas**: "Quantitative Finance" - Paul Wilmott
+- **Portfolio Theory**: "Modern Portfolio Theory" - Harry Markowitz
+- **Python Finance**: "Python for Finance" - Yves Hilpisch
+
+### APIs Alternativas
+
+- **Alpha Vantage**: Datos gratuitos con API key
+- **Polygon.io**: Datos en tiempo real
+- **IEX Cloud**: Mercados US
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
