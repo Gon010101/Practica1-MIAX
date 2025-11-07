@@ -4,10 +4,10 @@ Sistema interactivo de análisis financiero que extrae datos históricos de múl
 
 ## 🚀 Inicio Rápido
 
-### 1. Instalación
+### 1. Instalación y ejecución
 
 ```bash
-# Clonar o descargar el proyecto
+# Entrar al directorio del proyecto
 cd PRACTICA1
 
 # Crear entorno virtual (recomendado)
