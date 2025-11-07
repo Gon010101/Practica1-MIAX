@@ -216,8 +216,8 @@ def menu_principal():
     print("="*70)
     
     print("\n¿Qué deseas hacer?")
-    print("  1. Análisis de activos individuales")
-    print("  2. Análisis de cartera (portfolio)")
+    print("  1. Información de activos")
+    print("  2. Análisis de cartera / Simulación Monte Carlo")
     print("  0. Salir")
     
     while True:
@@ -251,11 +251,7 @@ def analisis_individual():
     print(f"  Fuente:      {fuente}")
     print("="*70)
     
-    confirmar = input("\n¿Proceder con la extracción? (s/n): ").strip().lower()
-    if confirmar != 's':
-        print("❌ Operación cancelada")
-        return
-    
+
     # Extraer datos
     try:
         extractor = Extractor(default_source=fuente)
@@ -270,8 +266,8 @@ def analisis_individual():
         print("\n" + "="*70)
         print(" 📊 TIPO DE SALIDA")
         print("="*70)
-        print("  1. Ver datos tabulares (tabla con fechas y valores)")
-        print("  2. Ver resumen estadístico (métricas calculadas)")
+        print("  1. Ver datos ")
+        print("  2. Ver resumen estadístico ")
         print("  3. Ver ambos")
         
         tipo_salida = input("\n👉 Opción (default: 1): ").strip() or "1"
@@ -391,10 +387,7 @@ def analisis_cartera():
     print(f"  Fuente:      {fuente}")
     print("="*70)
     
-    confirmar = input("\n¿Proceder con el análisis? (s/n): ").strip().lower()
-    if confirmar != 's':
-        print("❌ Operación cancelada")
-        return
+
     
     # Crear cartera
     try:
