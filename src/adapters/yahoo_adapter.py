@@ -24,13 +24,20 @@ class YahooAdapter(APISourceBase):
             if data.empty:
                 raise ValueError(f"No se encontraron datos para {ticker}")
             
+            # Manejar MultiIndex columns (cuando se descarga un solo ticker, a veces viene con MultiIndex)
+            if isinstance(data.columns, pd.MultiIndex):
+                data.columns = data.columns.get_level_values(0)
+            
+            # Verificar si existe 'Adj Close', si no usar 'Close'
+            close_column = 'Adj Close' if 'Adj Close' in data.columns else 'Close'
+            
             # Crear DataFrame estandarizado
             standardized_df = pd.DataFrame({
                 'Date': data.index,
                 'Open': data['Open'].values,
                 'High': data['High'].values,
                 'Low': data['Low'].values,
-                'Close': data['Adj Close'].values,  # Usamos Adj Close
+                'Close': data[close_column].values,  # Usamos Adj Close si existe
                 'Volume': data['Volume'].values
             })
             

@@ -1,10 +1,11 @@
-from typing import List, Dict
+from typing import List, Dict, Optional
 from src.adapters import APISourceBase
 from src.adapters.yahoo_adapter import YahooAdapter
 from src.adapters.investing_adapter import InvestingAdapter
 from src.models.timeseries import TimeSeries
 from src.models.portfolio import Portfolio
 from src.processing import preprocess_financial_data
+import numpy as np
 
 
 class Extractor:
@@ -50,7 +51,8 @@ class Extractor:
         tickers: List[str],
         start_date: str,
         end_date: str,
-        source: str = None
+        source: str = None,
+        columns: Optional[List[str]] = None
     ) -> List[TimeSeries]:
         """
         Extrae datos históricos para una lista de tickers.
@@ -60,12 +62,22 @@ class Extractor:
             start_date: Fecha inicio 'YYYY-MM-DD'
             end_date: Fecha fin 'YYYY-MM-DD'
             source: Fuente específica a usar (opcional, usa default si no se especifica)
+            columns: Lista de columnas a incluir (opcional). 
+                     Si None, incluye todas: ['Open', 'High', 'Low', 'Close', 'Volume']
             
         Returns:
             Lista de objetos TimeSeries, uno por cada ticker
         """
         # Seleccionar adaptador
         adapter = self.adapters[source] if source else self.current_adapter
+        
+        # Si no se especifican columnas, usar todas
+        if columns is None:
+            columns = ['Open', 'High', 'Low', 'Close', 'Volume']
+        
+        # Asegurar que 'Close' esté incluido (necesario para cálculos)
+        if 'Close' not in columns:
+            columns.append('Close')
         
         timeseries_list = []
         
@@ -76,12 +88,17 @@ class Extractor:
                 # Extraer datos crudos mediante el adaptador
                 raw_data = adapter.fetch_data(ticker, start_date, end_date)
                 
+                # Filtrar solo las columnas solicitadas (más Date)
+                columnas_a_mantener = ['Date'] + [col for col in columns if col in raw_data.columns]
+                raw_data = raw_data[columnas_a_mantener]
+                
                 # Preprocesar datos
                 processed_data, warnings = preprocess_financial_data(raw_data)
                 
                 # Mostrar advertencias si las hay
                 for warning in warnings:
-                    print(f"  ⚠️ {warning}")
+                    if not warning.startswith("✅"):
+                        print(f"  ⚠️  {warning}")
                 
                 # Crear objeto TimeSeries
                 period = f"{start_date} to {end_date}"
@@ -130,8 +147,14 @@ class Extractor:
         if set(tickers) != set(weights.keys()):
             raise ValueError("Los tickers y los pesos no coinciden")
         
-        # Extraer datos
-        timeseries_list = self.get_historical_data(tickers, start_date, end_date, source)
+        # Extraer datos (todas las columnas para portfolio)
+        timeseries_list = self.get_historical_data(
+            tickers, 
+            start_date, 
+            end_date, 
+            source,
+            columns=['Open', 'High', 'Low', 'Close', 'Volume']
+        )
         
         # Crear portfolio
         portfolio = Portfolio(components=timeseries_list, weights=weights)
@@ -176,7 +199,3 @@ class Extractor:
             print(f"  {key:.<30} {value}")
         
         print(f"{'='*60}\n")
-
-
-# Importar numpy para uso en create_portfolio
-import numpy as np
